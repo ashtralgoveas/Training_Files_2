@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react'
-import {axios} from 'axios'
+import axios from 'axios'
+import { act } from '@testing-library/react'
 
 const Login = () => {
   const [error, setError] = useState(false)
@@ -9,15 +10,16 @@ const Login = () => {
   const [password, setPassword] = useState("")
   const [user, setUser] = useState({})
 
-  const handleClick = async (e) => {
-    e.preventDefault();
+  const handleClick = async (event) => {
+    event.preventDefault();
     setLoading(true)
     try {
-        const {data} = await axios.get("https://jsonplaceholder.typicode.com/users/1")
-        setUser(data)
+        const {data} = await axios.get("https://jsonplaceholder.typicode.com/users/1");
+        await act(() => setUser(data))
     }catch {
       setError(true)
     }
+    setLoading(false)
   }
   return (
     <div className='container'>
